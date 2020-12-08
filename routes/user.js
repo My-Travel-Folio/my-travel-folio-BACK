@@ -1,9 +1,12 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 
-const User = require('../models/User');
-const Travel = require('../models/Travel')
-const File = require('../models/File')
+const User    = require('../models/User');
+const Travel  = require('../models/Travel')
+const File    = require('../models/File')
+
+// include CLOUDINARY:
+const uploader = require('../configs/cloudinary-setup.config');
 
 
 //GET: my profile => se haría en el front
@@ -34,29 +37,30 @@ router.post('/new-travel', (req, res, next) => {
 })
 
 
-//POST: upload documents
-router.post('/add-file', (req, res, next) => {
+router.post('/add-file', uploader.single("imageUrl"), (req, res) => {
   const {
     // cambiar cuando esté la ruta del front funcionando
     travelID,
     fileName,
-    fileURL,
     category,
     comment,
     date
   } = req.body
+
+  const imageUrl = req.file.path
 
   // const userID = req.user._id
 
   File.create({
     travelID,
     fileName,
-    fileURL,
+    imageUrl,
     category,
     comment,
     date
   })
     .then((result) => {
+      // console.log(result)
       res.send(result)
     })
     .catch((err) => res.send(err))

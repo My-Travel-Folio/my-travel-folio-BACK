@@ -1,20 +1,20 @@
 require('dotenv').config();
 
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const express = require('express');
-const favicon = require('serve-favicon');
-const hbs = require('hbs');
-const mongoose = require('mongoose');
-const logger = require('morgan');
-const path = require('path');
-const session = require('express-session');
-const passport = require('passport');
+const bodyParser    = require('body-parser');
+const cookieParser  = require('cookie-parser');
+const express       = require('express');
+const favicon       = require('serve-favicon');
+const hbs           = require('hbs');
+const mongoose      = require('mongoose');
+const logger        = require('morgan');
+const path          = require('path');
+const session       = require('express-session');
+const passport      = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
+const bcrypt        = require('bcryptjs');
 const cors          = require("cors");
 
-const User = require('./models/User')
+const User          = require('./models/User')
 
 
 mongoose
@@ -125,6 +125,5 @@ app.use('/', authRoutes);
 
 const user = require('./routes/user');
 app.use('/', user); 
-
 
 module.exports = app;

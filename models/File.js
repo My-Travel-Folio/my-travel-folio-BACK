@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const fileSchema = new Schema({
   travelID: {type: Schema.Types.ObjectId},
   fileName: {type: String, required: true},
-  fileURL: {type: String, required: true},
+  imageUrl: {type: String, required: true},
   category: {type: String, required: true},
   comment: {type: String},
   date: {type: Date, required: true},
