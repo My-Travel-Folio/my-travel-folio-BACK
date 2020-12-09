@@ -13,16 +13,14 @@ const uploader = require('../configs/cloudinary-setup.config');
 //GET: new travel => se haría en el front
 
 //POST: create new travel
-router.post('/new-travel', (req, res, next) => {
+router.post('/new-travel/:id', (req, res, next) => {
   const {
-    // cambiar cuando esté la ruta del front funcionando
-    userID,
     travelName, 
     startDate, 
     finishDate
   } = req.body
 
-  // const userID = req.user._id
+  const userID = req.params.id
 
   Travel.create({
     userID,
@@ -64,6 +62,19 @@ router.post('/add-file', uploader.single("imageUrl"), (req, res) => {
       res.send(result)
     })
     .catch((err) => res.send(err))
+})
+
+//POST: search all travels
+router.get('/all-travels/:id', (req, res, next) => {
+
+  Travel.find({userID: req.params.id})
+  .then((result)=>{
+    res.send(result)
+  })
+  .catch((err)=>{
+    res.send(err)
+  })
+
 })
 
 //POST: edit travel
