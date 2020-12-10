@@ -7,7 +7,7 @@ const fileSchema = new Schema({
   imageUrl: {type: String, required: true},
   category: {type: String, required: true},
   comment: {type: String},
-  date: {type: Date, required: true},
+  date: {type: String, required: true},
 })
 
 const File = mongoose.model('File', fileSchema)

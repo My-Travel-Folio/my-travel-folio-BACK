@@ -6,11 +6,8 @@ const Travel  = require('../models/Travel')
 const File    = require('../models/File')
 
 // include CLOUDINARY:
-const uploader = require('../configs/cloudinary-setup.config');
+const uploader = require('../configs/cloudinary-setup');
 
-
-//GET: my profile => se haría en el front
-//GET: new travel => se haría en el front
 
 //POST: create new travel
 router.post('/new-travel/:id', (req, res, next) => {
@@ -34,34 +31,6 @@ router.post('/new-travel/:id', (req, res, next) => {
     .catch((err) => res.send(err))
 })
 
-
-router.post('/new-file/:id', uploader.single("imageUrl"), (req, res) => {
-  const {
-    fileName,
-    category,
-    comment,
-    date
-  } = req.body
-
-  const imageUrl = req.file.path
-
-  const travelID = req.params.id
-
-  File.create({
-    travelID,
-    fileName,
-    imageUrl,
-    category,
-    comment,
-    date
-  })
-    .then((result) => {
-      res.send(result)
-    })
-    .catch((err) => res.send(err))
-})
-
-
 //GET: search all travels
 router.get('/all-travels/:id', (req, res, next) => {
 
@@ -72,7 +41,42 @@ router.get('/all-travels/:id', (req, res, next) => {
   .catch((err)=>{
     res.send(err)
   })
+})
 
+router.get('/files', (req, res, next) => {
+  File.find()
+    .then(filesFromDB => res.status(200).json(filesFromDB))
+    .catch(err => next(err));
+});
+
+router.post('/new-file', (req, res, next) => {
+  const {
+    travelID,
+    imageUrl,
+    fileName,
+    category,
+    comment,
+    date
+  } = req.body
+
+  File.create({
+    travelID,
+    fileName,
+    imageUrl,
+    category,
+    comment,
+    date
+  })
+    .then(result => result)
+    .catch(err => next(err));
+});
+
+router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+    return;
+  }
+  res.json({ secure_url: req.file.path });
 })
 
 //POST: edit travel
