@@ -35,10 +35,8 @@ router.post('/new-travel/:id', (req, res, next) => {
 })
 
 
-router.post('/add-file', uploader.single("imageUrl"), (req, res) => {
+router.post('/new-file/:id', uploader.single("imageUrl"), (req, res) => {
   const {
-    // cambiar cuando esté la ruta del front funcionando
-    travelID,
     fileName,
     category,
     comment,
@@ -47,7 +45,7 @@ router.post('/add-file', uploader.single("imageUrl"), (req, res) => {
 
   const imageUrl = req.file.path
 
-  // const userID = req.user._id
+  const travelID = req.params.id
 
   File.create({
     travelID,
@@ -58,13 +56,13 @@ router.post('/add-file', uploader.single("imageUrl"), (req, res) => {
     date
   })
     .then((result) => {
-      // console.log(result)
       res.send(result)
     })
     .catch((err) => res.send(err))
 })
 
-//POST: search all travels
+
+//GET: search all travels
 router.get('/all-travels/:id', (req, res, next) => {
 
   Travel.find({userID: req.params.id})
