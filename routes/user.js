@@ -14,7 +14,7 @@ router.post('/new-travel/:id', (req, res, next) => {
   const {
     travelName, 
     startDate, 
-    finishDate
+    endDate
   } = req.body
 
   const userID = req.params.id
@@ -23,7 +23,7 @@ router.post('/new-travel/:id', (req, res, next) => {
     userID,
     travelName,
     startDate,
-    finishDate,
+    endDate,
   })
     .then((result) => {
       res.send(result)
