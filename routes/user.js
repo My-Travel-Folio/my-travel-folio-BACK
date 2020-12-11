@@ -49,6 +49,13 @@ router.get('/files', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/files/:travelID', (req, res, next) => {
+
+  File.find({travelID: req.params.travelID})
+    .then(filesFromDB => res.status(200).json(filesFromDB))
+    .catch(err => next(err));
+});
+
 router.post('/new-file', (req, res, next) => {
   const {
     travelID,

@@ -32,4 +32,15 @@ router.get('/get-travel/:id', (req, res)=>{
   })
 })
 
+router.get('/get-file/:id', (req, res)=>{
+
+  File.findById(req.params.id)
+  .then((result)=>{
+    res.send(result)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+})
+
 module.exports = router;
