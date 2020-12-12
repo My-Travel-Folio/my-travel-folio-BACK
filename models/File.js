@@ -5,7 +5,7 @@ const fileSchema = new Schema({
   travelID: {type: Schema.Types.ObjectId},
   fileName: {type: String, required: true},
   imageUrl: {type: String, required: true},
-  category: {type: String, required: true},
+  category: {type: String, default: 'Other'},
   comment: {type: String},
   date: {type: String, required: true},
 })
