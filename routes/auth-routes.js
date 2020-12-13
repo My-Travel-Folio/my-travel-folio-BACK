@@ -15,25 +15,31 @@ authRoutes.post('/signup', (req, res) => {
 	const password = req.body.password;
 
 	if (!name || !lastName || !email || !password) {
-		res.status(400).json({ message: 'Please, complete all the fields with your data.' });
+		res
+		.json({ message: 'Please, complete all the fields with your data.' })
+		.status(400)
 		return;
 	}
 
 	if (password.length < 5) {
 		res
+			.json({ message: 'Please make your password at least 6 characters long for security purposes.' })
 			.status(400)
-			.json({ message: 'Please make your password at least 6 characters long for security purposes.' });
 		return;
 	}
 
 	User.findOne({ email }, (err, foundUser) => {
 		if (err) {
-			res.status(500).json({ message: 'E-mail check went bad.' });
+			res
+			.json({ message: 'E-mail check went bad.' })
+			.status(500)
 			return;
 		}
 
 		if (foundUser) {
-			res.status(400).json({ message: 'This email already exists. Please, log in.' });
+			res
+			.json({ message: 'This email already exists. Please, log in.' })
+			.status(400)
 			return;
 		}
 
@@ -70,13 +76,25 @@ authRoutes.post('/signup', (req, res) => {
 });
 
 
-// POST: login
-authRoutes.post('/login', passport.authenticate("local", {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true,
-  passReqToCallback: true
-}))
+authRoutes.post('/login', (req, res, next) => {
+	passport.authenticate('local', (err, theUser, failureDetails) => {
+			if (err) {
+					res.status(500).json({ message: 'Something went wrong authenticating user' });
+					return;
+			}
+			if (!theUser) {
+					res.json(failureDetails).status(401);
+					return;
+			}
+			req.login(theUser, (err) => {
+					if (err) {
+							res.status(500).json({ message: 'Session save went bad.' });
+							return;
+					}
+					res.status(200).json(theUser);
+			});
+	})(req, res, next);
+});
 
 
 //POST: logout
