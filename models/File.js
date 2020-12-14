@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const fileSchema = new Schema({
-  travelID: {type: Schema.Types.ObjectId},
+  travelID: {type: String},
   fileName: {type: String, required: true},
   imageUrl: {type: String, required: true},
-  category: {type: String, enum: ['hotelReservation', 'transportTicket', 'experienceTicket', 'other'], default: 'other'},
+  category: {type: String, default: 'other'},
   comment: {type: String},
   date: {type: String, required: true},
+  fixedDate: {type: String, required: true}
 })
 
 const File = mongoose.model('File', fileSchema)

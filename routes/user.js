@@ -49,40 +49,6 @@ router.get('/files', (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.get('/files-search-category', (req, res, next) => {
-
-  const {
-    hotelReservation,
-    transportTicket,
-    experienceTicket,
-    other
-  } = req.query
-
-  const categories =
-  [hotelReservation,
-  transportTicket,
-  experienceTicket,
-  other]
-
-  File.find({category: {$all: categories}})
-    .then(filesFromDB => res.status(200).json(filesFromDB))
-    .catch(err => next(err));
-});
-
-router.get('/files-search-hotel', (req, res, next) => {
-
-  const {
-    hotelReservation
-  } = req.query
-
-  const categories =
-  [hotelReservation]
-
-  File.find({category: {$all: categories}})
-    .then(filesFromDB => res.status(200).json(filesFromDB))
-    .catch(err => next(err));
-});
-
 router.get('/files/:travelID', (req, res, next) => {
 
   File.find({travelID: req.params.travelID})
@@ -97,7 +63,8 @@ router.post('/new-file', (req, res, next) => {
     fileName,
     category,
     comment,
-    date
+    date,
+    fixedDate
   } = req.body
 
   File.create({
@@ -106,7 +73,8 @@ router.post('/new-file', (req, res, next) => {
     imageUrl,
     category,
     comment,
-    date
+    date,
+    fixedDate
   })
     .then(result => result)
     .catch(err => next(err));
