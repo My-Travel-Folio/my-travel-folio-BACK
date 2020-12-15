@@ -35,6 +35,37 @@ router.post('/new-travel/:id', (req, res, next) => {
     .catch((err) => res.send(err))
 })
 
+//POST: deletetravel
+
+router.post('/delete-travel/:id', (req, res, next) => {
+
+  // const travelID = req.params.id
+
+  Travel.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      res.send(result)
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log
+      res.send(err)})
+})
+
+// router.post('/delete-travel', (req, res, next) => {
+
+//   const travelID = req.body.travel._id
+
+//   Travel.deleteOne({_id: travelID})
+//     .then((result) => {
+//       res.send(result)
+//       console.log(result)
+//     })
+//     .catch((err) => {
+//       console.log
+//       res.send(err)})
+// })
+
+
 //GET: search all travels
 router.get('/all-travels/:id', (req, res, next) => {
 
