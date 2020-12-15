@@ -51,20 +51,6 @@ router.post('/delete-travel/:id', (req, res, next) => {
       res.send(err)})
 })
 
-// router.post('/delete-travel', (req, res, next) => {
-
-//   const travelID = req.body.travel._id
-
-//   Travel.deleteOne({_id: travelID})
-//     .then((result) => {
-//       res.send(result)
-//       console.log(result)
-//     })
-//     .catch((err) => {
-//       console.log
-//       res.send(err)})
-// })
-
 
 //GET: search all travels
 router.get('/all-travels/:id', (req, res, next) => {
@@ -123,9 +109,24 @@ router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
   res.json({ secure_url: req.file.path });
 })
 
+//POST: deletetravel
+
+router.post('/delete-file/:id', (req, res, next) => {
+
+  // const travelID = req.params.id
+
+  File.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      res.send(result)
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log
+      res.send(err)})
+})
+
 //POST: edit travel
 //POST: edit file
-//POST: delete travel
-//POST: delete file
+
 
 module.exports = router;
