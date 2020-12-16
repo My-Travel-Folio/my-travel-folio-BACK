@@ -70,9 +70,9 @@ router.get('/files', (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.get('/files/:travelID', (req, res, next) => {
-
-  File.find({travelID: req.params.travelID})
+router.get('/files/:id', (req, res, next) => {
+  // console.log(typeof req.body.travelID)
+  File.find({travelID: req.params.id})
     .then(filesFromDB => res.status(200).json(filesFromDB))
     .catch(err => next(err));
 });
