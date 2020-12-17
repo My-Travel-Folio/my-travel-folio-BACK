@@ -13,6 +13,7 @@ const passport      = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt        = require('bcryptjs');
 const cors          = require("cors");
+const cookieSession = require("cookie-session")
 
 const User          = require('./models/User')
 
@@ -57,17 +58,17 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 
 //CORS middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+//   res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+//   next();
+// });
 
 app.use(cors({
   credentials: true,
-  origin: ["http://localhost:3001"]
+  origin: ["http://localhost:3001", "https://my-travel-folio.netlify.app"]
 }));
 
 app.use((req, res, next)=>{
@@ -75,8 +76,24 @@ app.use((req, res, next)=>{
   next();
 })
 
-// Middleware de Session
-app.use(session({ secret: 'ourPassword', resave: true, saveUninitialized: true }));
+// Middleware de Session & Cookie Session
+app.set('trust proxy', 1)
+app.use(cookieSession({
+    name:'session',
+    keys: ['key1', 'key2'],
+    sameSite: 'none',
+    secure: true
+}))
+
+app.use(session({ 
+  secret: 'ourPassword', 
+  resave: true, 
+  saveUninitialized: true,
+  cookie: {
+    sameSite: 'none',
+    secure: true
+  }
+}));
 
 //Middleware para serializar al usuario
 passport.serializeUser((user, callback) => {
