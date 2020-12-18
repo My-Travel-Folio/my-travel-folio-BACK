@@ -77,22 +77,22 @@ app.use((req, res, next)=>{
 })
 
 // Middleware de Session & Cookie Session
-app.set('trust proxy', 1)
-app.use(cookieSession({
-    name:'session',
-    keys: ['key1', 'key2'],
-    sameSite: 'none',
-    secure: true
-}))
+// app.set('trust proxy', 1)
+// app.use(cookieSession({
+//     name:'session',
+//     keys: ['key1', 'key2'],
+//     sameSite: 'none',
+//     secure: true
+// }))
 
 app.use(session({ 
   secret: 'ourPassword', 
   resave: true, 
   saveUninitialized: true,
-  cookie: {
-    sameSite: 'none',
-    secure: true
-  }
+  // cookie: {
+  //   sameSite: 'none',
+  //   secure: true
+  // }
 }));
 
 //Middleware para serializar al usuario
